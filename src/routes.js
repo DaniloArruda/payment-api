@@ -10,10 +10,10 @@ routes.post("/cliente", ClienteController.store);
 routes.put("/cliente/:id", ClienteController.update);
 routes.delete("/cliente/:id", ClienteController.delete);
 
-routes.get("/cliente", PlanoController.index);
-routes.get("/cliente/:id", PlanoController.show);
-routes.post("/cliente", PlanoController.store);
-routes.put("/cliente/:id", PlanoController.update);
-routes.delete("/cliente/:id", PlanoController.delete);
+routes.get("/plano", PlanoController.index);
+routes.get("/plano/:id", PlanoController.show);
+routes.post("/plano", PlanoController.store);
+routes.put("/plano/:id", PlanoController.update);
+routes.delete("/plano/:id", PlanoController.delete);
 
 module.exports = routes;
