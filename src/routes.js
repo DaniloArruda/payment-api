@@ -1,8 +1,8 @@
 const express = require('express');
 const routes = express.Router();
 
-const CustomerController = require('./controller/CustomerController');
-const PlanController = require('./controller/PlanController');
+const CustomerController = require('./controller/ClienteController');
+const PlanController = require('./controller/PlanoController');
 
 routes.get("/customer", CustomerController.index);
 routes.get("/customer/:id", CustomerController.show);

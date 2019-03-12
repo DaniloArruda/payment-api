@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const CustomerSchema = new mongoose.Schema({
-    name: {
+const ClienteSchema = new mongoose.Schema({
+    nome: {
         type: String,
         required: true,
     },
@@ -9,14 +9,18 @@ const CustomerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    phone: {
+    telefone: {
         type: String,
         required: true,
     },
-    plan: {
+    endereco: {
+        type: {},
+        required: true,
+    },
+    plano: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Plan'
+        ref: 'Plano'
     }
 });
 
-mongoose.model('Customer', CustomerSchema);
+mongoose.model('Cliente', ClienteSchema);

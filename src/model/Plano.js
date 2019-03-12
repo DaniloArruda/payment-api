@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
-const PlanSchema = new mongoose.Schema({
-    cost: {
+const PlanoSchema = new mongoose.Schema({
+    valor: {
         type: Number,
         required: true,
     },
-    description: {
+    nome: {
         type: String,
         required: true,
     },
-    qtdData: {
+    qtdDados: {
         type: Number,
         required: true,
     },
 });
 
-mongoose.model('Plan', PlanSchema);
+mongoose.model('Plano', PlanoSchema);
