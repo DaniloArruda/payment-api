@@ -1,19 +1,19 @@
 const express = require('express');
 const routes = express.Router();
 
-const CustomerController = require('./controller/ClienteController');
-const PlanController = require('./controller/PlanoController');
+const ClienteController = require('./controller/ClienteController');
+const PlanoController = require('./controller/PlanoController');
 
-routes.get("/customer", CustomerController.index);
-routes.get("/customer/:id", CustomerController.show);
-routes.post("/customer", CustomerController.store);
-routes.put("/customer/:id", CustomerController.update);
-routes.delete("/customer/:id", CustomerController.delete);
+routes.get("/cliente", ClienteController.index);
+routes.get("/cliente/:id", ClienteController.show);
+routes.post("/cliente", ClienteController.store);
+routes.put("/cliente/:id", ClienteController.update);
+routes.delete("/cliente/:id", ClienteController.delete);
 
-routes.get("/plan", PlanController.index);
-routes.get("/plan/:id", PlanController.show);
-routes.post("/plan", PlanController.store);
-routes.put("/plan/:id", PlanController.update);
-routes.delete("/plan/:id", PlanController.delete);
+routes.get("/cliente", PlanoController.index);
+routes.get("/cliente/:id", PlanoController.show);
+routes.post("/cliente", PlanoController.store);
+routes.put("/cliente/:id", PlanoController.update);
+routes.delete("/cliente/:id", PlanoController.delete);
 
 module.exports = routes;
