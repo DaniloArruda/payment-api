@@ -13,6 +13,6 @@ mongoose.connect("mongodb://localhost:27017/pagamentoapi", { useNewUrlParser: tr
     .catch(err => console.error('Something went wrong', err));
 requireDir("./src/model");
 
-app.use("/payment-api", require("./src/routes"));
+app.use("/pagamento-api", require("./src/routes"));
 
 app.listen(3001);
