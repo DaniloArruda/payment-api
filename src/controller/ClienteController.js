@@ -15,7 +15,7 @@ module.exports = {
 
     async store(req, res) {
         Cliente.create(req.body)
-            .then(cliente => res.json(cliente))
+            .then(cliente => res.status(201).json(cliente))
             .catch(erro => res.status(500).json(erro));
     },
 

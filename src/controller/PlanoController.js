@@ -15,7 +15,7 @@ module.exports = {
 
     async store(req, res) {
         const plano = await Plano.create(req.body);
-        return res.json(plano);
+        return res.status(201).json(plano);
     },
 
     async update(req, res) {
