@@ -4,7 +4,23 @@ const Cliente = mongoose.model('Cliente');
 
 module.exports = {
     async index(req, res) {
-        const clientes = await Cliente.find();
+        const params = req.query;
+        const nome = params.nome;
+        const email = params.email;
+        const plano = params.plano;
+
+        const condicoes = {};
+        if (nome) {
+            condicoes.nome = new RegExp(nome, "i");
+        }
+        if (email) {
+            condicoes.email = new RegExp(email, "i");
+        }
+        if(plano) {
+            condicoes.plano = plano;
+        }
+
+        const clientes = await Cliente.find(condicoes);
         return res.json(clientes);
     },
 
