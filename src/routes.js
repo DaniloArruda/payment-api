@@ -3,6 +3,7 @@ const routes = express.Router();
 
 const ClienteController = require('./controller/ClienteController');
 const PlanoController = require('./controller/PlanoController');
+const PagamentoController = require('./controller/PagamentoController');
 
 routes.get("/cliente", ClienteController.index);
 routes.get("/cliente/:id", ClienteController.show);
@@ -15,5 +16,7 @@ routes.get("/plano/:id", PlanoController.show);
 routes.post("/plano", PlanoController.store);
 routes.put("/plano/:id", PlanoController.update);
 routes.delete("/plano/:id", PlanoController.delete);
+
+routes.post("/pagamento", PagamentoController.store);
 
 module.exports = routes;

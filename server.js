@@ -16,5 +16,5 @@ requireDir("./src/model");
 
 app.use("/", require("./src/routes"));
 
-const port = process.env.PORT | 5000;
+const port = process.env.PORT || 5000;
 app.listen(port);

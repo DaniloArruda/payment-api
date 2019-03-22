@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const Cliente = mongoose.model('Cliente');
+const ClienteService = require('../service/ClienteService');
 
 module.exports = {
     async index(req, res) {
@@ -20,12 +21,12 @@ module.exports = {
             condicoes.plano = plano;
         }
 
-        const clientes = await Cliente.find(condicoes);
+        const clientes = await Cliente.find(condicoes, 'nome email telefone endereco plano');
         return res.json(clientes);
     },
 
     async show(req, res) {
-        const cliente = await Cliente.findById(req.params.id);
+        const cliente = await ClienteService.findClienteById(req.params.id);
         return res.json(cliente);
     },
 

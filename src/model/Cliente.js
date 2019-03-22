@@ -20,7 +20,8 @@ const ClienteSchema = new mongoose.Schema({
     plano: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Plano'
-    }
+    },
+    pagamentos: {}
 });
 
 mongoose.model('Cliente', ClienteSchema);
