@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+const Plano = mongoose.model('Plano');
 const Cliente = mongoose.model('Cliente');
 const ClienteService = require('../service/ClienteService');
 
@@ -32,7 +33,17 @@ module.exports = {
     },
 
     async show(req, res) {
-        const cliente = await ClienteService.findClienteById(req.params.id);
+        const params = req.query;
+        const paramPagamento = params.pagamento;
+        const type = typeof paramPagamento;
+        const comPagamento = type !== 'undefined';
+        const cliente = await ClienteService.findClienteById(req.params.id).lean();
+
+        if (comPagamento) {
+            const plano = await Plano.findById(cliente.plano).lean();
+            cliente.planoObj = plano;
+        }
+
         return res.json(cliente);
     },
 
