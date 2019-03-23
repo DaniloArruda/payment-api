@@ -9,6 +9,9 @@ module.exports = {
         const nome = params.nome;
         const email = params.email;
         const plano = params.plano;
+        const resumo = params.resumo;
+
+        let projecao = 'nome email telefone endereco plano';
 
         const condicoes = {};
         if (nome) {
@@ -20,8 +23,11 @@ module.exports = {
         if(plano) {
             condicoes.plano = plano;
         }
+        if(typeof resumo !== 'undefined') {
+            projecao = 'nome'; 
+        }
 
-        const clientes = await Cliente.find(condicoes, 'nome email telefone endereco plano');
+        const clientes = await Cliente.find(condicoes, projecao);
         return res.json(clientes);
     },
 
