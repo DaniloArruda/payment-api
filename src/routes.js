@@ -17,6 +17,7 @@ routes.get("/cliente/:id", ClienteController.show);
 routes.post("/cliente", ClienteController.store);
 routes.put("/cliente/:id", ClienteController.update);
 routes.delete("/cliente/:id", ClienteController.delete);
+routes.get("/cliente/count", ClienteController.count);
 
 routes.get("/plano", PlanoController.index);
 routes.get("/plano/:id", PlanoController.show);

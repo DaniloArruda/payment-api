@@ -25,7 +25,7 @@ module.exports = {
             condicoes.plano = plano;
         }
         if(typeof resumo !== 'undefined') {
-            projecao = 'nome'; 
+            projecao = 'nome';
         }
 
         const clientes = await Cliente.find(condicoes, projecao);
@@ -61,5 +61,10 @@ module.exports = {
     async delete(req, res) {
         await Cliente.findByIdAndDelete(req.params.id);
         return res.send();
+    },
+
+    async count(req, res) {
+      const count = await Cliente.estimatedDocumentCount();
+      return res.json({ count });
     }
 };
