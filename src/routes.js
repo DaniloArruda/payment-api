@@ -12,12 +12,12 @@ routes.post("/usuario/registrar", UsuarioController.registrar);
 routes.post("/usuario/autenticar", UsuarioController.autenticar);
 
 routes.use(authMiddleware);
+routes.get("/cliente/quantidade", ClienteController.count);
 routes.get("/cliente", ClienteController.index);
 routes.get("/cliente/:id", ClienteController.show);
 routes.post("/cliente", ClienteController.store);
 routes.put("/cliente/:id", ClienteController.update);
 routes.delete("/cliente/:id", ClienteController.delete);
-routes.get("/cliente/quantidade", ClienteController.count);
 
 routes.get("/plano", PlanoController.index);
 routes.get("/plano/:id", PlanoController.show);
