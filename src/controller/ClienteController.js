@@ -52,37 +52,34 @@ module.exports = {
       const devedores = [];
       const params = req.query;
       const clientes = await ClienteService.findClientes(params);
-      for (cliente in clientes) {
-        if (!cliente.pagamentos) {
-          devedores.push(cliente);
-        } else {
-          const mesInicial = moment(cliente.createdAt).toDate().getMonth();
-          const anoInicial = moment(cliente.createdAt).toDate().getFullYear();
+      for (cliente of clientes) {
+        const mesInicial = moment(cliente.createdAt).toDate().getMonth();
+        const anoInicial = moment(cliente.createdAt).toDate().getFullYear();
 
-          const mesAtual = moment().toDate().getMonth();
-          const anoAtual = moment().toDate().getFullYear();
+        const mesAtual = moment().toDate().getMonth();
+        const anoAtual = moment().toDate().getFullYear();
 
-          const mesAux = mesInicial;
-          const anoAux = anoInicial;
+        const mesAux = mesInicial;
+        const anoAux = anoInicial;
 
-          while(mesAux < mesAtual && anoAux <= anoAtual) {
+        while(mesAux < mesAtual && anoAux <= anoAtual) {
 
-            pagamentoMesAtual = cliente.pagamentos.find(pagamento =>
-              moment(pagamento.data).toDate().getMonth() == mesAux
-                && moment(pagamento.data).toDate().getFullYear() == anoAux
-            );
+          pagamentoMesAtual = cliente.pagamentos.find(pagamento =>
+            moment(pagamento.data).toDate().getMonth() == mesAux
+              && moment(pagamento.data).toDate().getFullYear() == anoAux
+          );
 
-            if (!pagamentoMesAtual) {
-              devedores.push(cliente);
-            }
+          if (!pagamentoMesAtual) {
+            devedores.push(cliente);
+          }
 
-            if (mesAux == 11) {
-              mesAux = 0;
-            } else {
-              mesAux++;
-            }
+          if (mesAux == 11) {
+            mesAux = 0;
+          } else {
+            mesAux++;
           }
         }
+
       }
 
       return res.json(devedores);

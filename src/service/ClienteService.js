@@ -35,7 +35,7 @@ module.exports = {
           projecao = 'nome';
       }
 
-      const clientes = await Cliente.find(condicoes, projecao);
+      const clientes = await Cliente.find(condicoes, projecao).lean();
       return clientes;
     }
 }
