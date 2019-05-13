@@ -21,7 +21,11 @@ const ClienteSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Plano'
     },
-    pagamentos: {}
+    pagamentos: {},
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
 });
 
 mongoose.model('Cliente', ClienteSchema);

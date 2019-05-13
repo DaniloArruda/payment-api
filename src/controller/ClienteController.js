@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const Plano = mongoose.model('Plano');
 const Cliente = mongoose.model('Cliente');
@@ -7,28 +8,7 @@ const ClienteService = require('../service/ClienteService');
 module.exports = {
     async index(req, res) {
         const params = req.query;
-        const nome = params.nome;
-        const email = params.email;
-        const plano = params.plano;
-        const resumo = params.resumo;
-
-        let projecao = 'nome email telefone endereco plano';
-
-        const condicoes = {};
-        if (nome) {
-            condicoes.nome = new RegExp(nome, "i");
-        }
-        if (email) {
-            condicoes.email = new RegExp(email, "i");
-        }
-        if(plano) {
-            condicoes.plano = plano;
-        }
-        if(typeof resumo !== 'undefined') {
-            projecao = 'nome';
-        }
-
-        const clientes = await Cliente.find(condicoes, projecao);
+        const clientes = await ClienteService.findClientes(params);
         return res.json(clientes);
     },
 
@@ -37,7 +17,7 @@ module.exports = {
         const paramPagamento = params.pagamento;
         const type = typeof paramPagamento;
         const comPagamento = type !== 'undefined';
-        const cliente = await ClienteService.findClienteById(req.params.id).lean();
+        const cliente = await ClienteService.findClienteById(req.params.id);
 
         if (comPagamento) {
             const plano = await Plano.findById(cliente.plano).lean();
@@ -66,5 +46,60 @@ module.exports = {
     async count(req, res) {
       const count = await Cliente.estimatedDocumentCount();
       return res.json({ count });
+    },
+
+    async clientesDevedores(req, res) {
+      const devedores = [];
+      const params = req.query;
+      const clientes = await ClienteService.findClientes(params);
+      for (cliente in clientes) {
+        if (!cliente.pagamentos) {
+          devedores.push(cliente);
+        } else {
+          const mesInicial = moment(cliente.createdAt).toDate().getMonth();
+          const anoInicial = moment(cliente.createdAt).toDate().getFullYear();
+
+          const mesAtual = moment().toDate().getMonth();
+          const anoAtual = moment().toDate().getFullYear();
+
+          const mesAux = mesInicial;
+          const anoAux = anoInicial;
+
+          while(mesAux < mesAtual && anoAux <= anoAtual) {
+
+            pagamentoMesAtual = cliente.pagamentos.find(pagamento =>
+              moment(pagamento.data).toDate().getMonth() == mesAux
+                && moment(pagamento.data).toDate().getFullYear() == anoAux
+            );
+
+            if (!pagamentoMesAtual) {
+              devedores.push(cliente);
+            }
+
+            if (mesAux == 11) {
+              mesAux = 0;
+            } else {
+              mesAux++;
+            }
+          }
+        }
+      }
+
+      return res.json(devedores);
+    },
+
+    async teste(req, res) {
+      const params = req.params
+      const clientes = await ClienteService.findClientes(params);
+
+      for (cliente in clientes) {
+        console.log(moment(cliente.createdAt).toDate().getMonth());
+        console.log(moment(cliente.createdAt).toDate().getFullYear());
+        console.log(moment().toDate().getMonth());
+        console.log(moment().toDate().getFullYear());
+        break;
+      }
+
+      return res.send();
     }
 };
