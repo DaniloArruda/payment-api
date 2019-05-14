@@ -52,51 +52,32 @@ module.exports = {
       const devedores = [];
       const params = req.query;
       const clientes = await ClienteService.findClientes(params);
+
       for (cliente of clientes) {
-        const mesInicial = moment(cliente.createdAt).toDate().getMonth();
-        const anoInicial = moment(cliente.createdAt).toDate().getFullYear();
+        const dataAtual = moment();
+        let dataAux = moment(cliente.createdAt);
 
-        const mesAtual = moment().toDate().getMonth();
-        const anoAtual = moment().toDate().getFullYear();
+        while(dataAux.isBefore(dataAtual, 'month')) {
 
-        const mesAux = mesInicial;
-        const anoAux = anoInicial;
-
-        while(mesAux < mesAtual && anoAux <= anoAtual) {
+          if (!cliente.pagamentos) {
+            devedores.push(cliente);
+            break;
+          }
 
           pagamentoMesAtual = cliente.pagamentos.find(pagamento =>
-            moment(pagamento.data).toDate().getMonth() == mesAux
-              && moment(pagamento.data).toDate().getFullYear() == anoAux
+            moment(pagamento.data).toDate().getMonth() === dataAux.toDate().getMonth()
+            && moment(pagamento.data).toDate().getFullYear() === dataAux.toDate().getFullYear()
           );
 
           if (!pagamentoMesAtual) {
             devedores.push(cliente);
+            break;
           }
 
-          if (mesAux == 11) {
-            mesAux = 0;
-          } else {
-            mesAux++;
-          }
+          dataAux.add(1, 'M');
         }
-
       }
 
       return res.json(devedores);
-    },
-
-    async teste(req, res) {
-      const params = req.params
-      const clientes = await ClienteService.findClientes(params);
-
-      for (cliente in clientes) {
-        console.log(moment(cliente.createdAt).toDate().getMonth());
-        console.log(moment(cliente.createdAt).toDate().getFullYear());
-        console.log(moment().toDate().getMonth());
-        console.log(moment().toDate().getFullYear());
-        break;
-      }
-
-      return res.send();
     }
 };

@@ -19,7 +19,7 @@ module.exports = {
       const plano = params.plano;
       const resumo = params.resumo;
 
-      let projecao = 'nome email telefone endereco plano';
+      let projecao = 'nome email telefone endereco plano pagamentos createdAt';
 
       const condicoes = {};
       if (nome) {
