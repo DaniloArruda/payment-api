@@ -10,9 +10,10 @@ const authMiddleware = require('./middlewares/auth');
 
 routes.post("/usuario/registrar", UsuarioController.registrar);
 routes.post("/usuario/autenticar", UsuarioController.autenticar);
+routes.get("/cliente/dinheiroDevendo", ClienteController.dinheiroDevendo)
+routes.get("/cliente/devedores", ClienteController.clientesDevedores);
 
 routes.use(authMiddleware);
-routes.get("/cliente/devedores", ClienteController.clientesDevedores);
 routes.get("/cliente/quantidade", ClienteController.count);
 routes.get("/cliente", ClienteController.index);
 routes.get("/cliente/:id", ClienteController.show);

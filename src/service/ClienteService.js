@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 
 const Cliente = mongoose.model('Cliente');
+const Plano = mongoose.model('Plano');
 
 module.exports = {
     async findClienteById(id) {
@@ -69,5 +70,34 @@ module.exports = {
       }
 
       return devedores;
+    },
+
+    async dinheiroDevendo(params) {
+      let dinheiroDevendo = 0.0;
+      let clientes = await this.findClientes(params);
+
+      for (cliente of clientes) {
+        cliente.planoObj = await Plano.findById(cliente.plano).lean();
+
+        const dataAtual = moment();
+        let dataAux = moment(cliente.createdAt);
+
+        while(dataAux.isBefore(dataAtual, 'month')) {
+          pagamentoMesAtual = cliente.pagamentos.find(pagamento =>
+            dataAux.isSame(moment(pagamento.data), 'M')
+          );
+
+          if (!pagamentoMesAtual) {
+            dinheiroDevendo += cliente.planoObj.valor;
+          } else {
+            const valor = cliente.planoObj.valor - pagamentoMesAtual.valor;
+            dinheiroDevendo += valor >= 0 ? valor : 0;
+          }
+
+          dataAux.add(1, 'M');
+        }
+      }
+
+      return dinheiroDevendo;
     }
 }

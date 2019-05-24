@@ -52,5 +52,12 @@ module.exports = {
       const devedores = await ClienteService.findClientesDevedores(params);
 
       return res.json(devedores);
+    },
+
+    async dinheiroDevendo(req, res) {
+      const params = req.query;
+      const valor = await ClienteService.dinheiroDevendo(params);
+
+      return res.json({ valor });
     }
 };
