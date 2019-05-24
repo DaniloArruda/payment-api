@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const Cliente = mongoose.model('Cliente');
 
@@ -37,5 +38,36 @@ module.exports = {
 
       const clientes = await Cliente.find(condicoes, projecao).lean();
       return clientes;
+    },
+
+    async findClientesDevedores(params) {
+      const devedores = [];
+      const clientes = await this.findClientes(params);
+
+      for (cliente of clientes) {
+        const dataAtual = moment();
+        let dataAux = moment(cliente.createdAt);
+
+        while(dataAux.isBefore(dataAtual, 'month')) {
+
+          if (!cliente.pagamentos) {
+            devedores.push(cliente);
+            break;
+          }
+
+          pagamentoMesAtual = cliente.pagamentos.find(pagamento =>
+            dataAux.isSame(moment(pagamento.data), 'M')
+          );
+
+          if (!pagamentoMesAtual) {
+            devedores.push(cliente);
+            break;
+          }
+
+          dataAux.add(1, 'M');
+        }
+      }
+
+      return devedores;
     }
 }
